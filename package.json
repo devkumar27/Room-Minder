@@ -1,0 +1,28 @@
+{
+  "name": "room-minder",
+  "version": "1.0.0",
+  "description": "A Hostel Room Maintenance System where students staying in hostels can file maintenance requests to the Hostel Authority. This is a web application developed using React.js, Node.js, Express,js and MongoDB.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devkumar27/Room-Minder.git"
+  },
+  "author": "DEV",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devkumar27/Room-Minder/issues"
+  },
+  "homepage": "https://github.com/devkumar27/Room-Minder#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.4.2"
+  },
+  "type": "module"
+}

@@ -10,7 +10,7 @@ const authUser = asyncHandler(async (req, res) => {
 
     const user = await User.findOne({ email });
 
-    if(user && (await User.matchPassword(password))) {
+    if(user && (await user.matchPassword(password))) {
         res.json({
             _id: user._id,
             email: user.email,
@@ -32,11 +32,11 @@ const authUser = asyncHandler(async (req, res) => {
 // @route       POST /api/users
 // @access      Public
 const registerUser = asyncHandler(async (req, res) => {
-    const { firstName, lastName, email, password, roomNo } = req.body;
-    if(!email.includes('vitbhopal.ac.in')) {
-        res.status(400);
-        throw new Error("Please enter your university e-mail address.");
-    }
+    const { userID, firstName, lastName, email, password, roomNo } = req.body;
+    // if(!email.includes('vitbhopal.ac.in')) {
+    //     res.status(400);
+    //     throw new Error("Please enter your university e-mail address.");
+    // }
     const userExists = await User.findOne({ email });
 
     if(userExists) {
@@ -45,6 +45,7 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     const user = await User.create({
+        userID,
         email,
         password,
         firstName, 
@@ -74,7 +75,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route       GET /api/users/profile
 // @access      Private
 const getUserProfile = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.body._id);//changed function parameter from req.user._id to req.body._id
 
     if(user) {
         res.json({
@@ -97,7 +98,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @route       PUT /api/users/profile
 // @access      Private/Admin
 const updateProfile = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.body._id);//changed function parameter from req.user._id to req.body._id
 
     if(user) {
         email = req.body.email || user.email;

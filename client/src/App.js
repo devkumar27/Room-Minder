@@ -1,11 +1,10 @@
-import logo from './logo.svg';
+import Navbar from './components/Navbar.jsx';
+// import 
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <h1>RoomMinder</h1>
-    </div>
+    <Navbar />
   );
 }
 

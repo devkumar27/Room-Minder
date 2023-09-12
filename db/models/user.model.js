@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { Schema } from "mongoose";
 import bcrypt from 'bcrypt';
 
-// We have user- Students, who are staying in the hostel, and admin- the hostel authority, who take care of maintenance of hostel rooms
+// We have two types of users- Hostellers, who are residing in the hostel, and admin- the hostel authority, who take care of maintenance of hostel rooms
 
 // This is the user schema
 const userSchema = new Schema({
@@ -13,7 +13,7 @@ const userSchema = new Schema({
         unique: true,
         lowercase: true
     },
-    hashedPassword: {
+    password: {
         type: String,
         required: true
     },
@@ -38,10 +38,23 @@ const userSchema = new Schema({
         required: true,
         trim: true,
     },
+    complaints: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Complaints'
+        }
+    ],
     isAdmin: {
         type: Boolean,
         required: true,
         default: false
+    }
+},
+{
+    methods: {
+        async matchPassword(plainText) {
+            return await bcrypt.compare(plainText, this.password);
+        }
     }
 },
     {
@@ -53,31 +66,31 @@ const userSchema = new Schema({
 const saltRounds = 10;
 
 // Methods
-userSchema.methods = {
-    authenticate: async function (plainText) {
-        return await bcrypt.compare(plainText, this.hashedPassword);
+userSchema.methods.authenticate = {
+    async function (plainText) {
+        return await bcrypt.compare(plainText, this.password);
     }
 };
 
-// User Schema Methods
-userSchema.methods = {
-    matchPassword: function(plainText) {
-        return this.encryptPassword(plainText) === this.hashed_password;
-    }
-};
+// // User Schema Methods
+// userSchema.methods = {
+//     matchPassword: function(plainText) {
+//         return bcrypt.encryptPassword(plainText) === this.password;
+//     }
+// };
 
 // Pre-hook
 userSchema.pre('save', async function (next) {
-    if(!this.isModified('hashedPassword')) {
+    if(!this.isModified('password')) {
         next();
     }
 
-    const salt = await bcrypt.genSalt(10);
-    this.hashedPassword = await bcrypt.hash(this.hashedPassword, salt);
+    const salt = await bcrypt.genSalt(saltRounds);
+    this.password = await bcrypt.hash(this.password, salt);
 });
 
 // Making mongoose model
 const User = mongoose.model('User', userSchema);
 
 // Exporting our model for use in our application
-module.exports = User;
+export default User;

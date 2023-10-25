@@ -7,7 +7,7 @@ const complaintSchema = new mongoose.Schema({
         required: true,
         // unique: true 
     },
-    complaintType: { // look into how you can select a value for this field fromo a few options
+    complaintType: { // look into how you can select a value for this field from a few options
         type: String,
         required: true,
     },

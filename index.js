@@ -9,6 +9,7 @@ import complaintRoutes from './routes/complaints.route.js';
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 
 app.use('/api/user', userRoutes);

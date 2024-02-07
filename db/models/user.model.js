@@ -8,14 +8,14 @@ import bcrypt from 'bcrypt';
 const userSchema = new Schema({
     email: {
         type: String,
-        required: true,
+        required: [true, "Your email address is required"],
         trim: true,
         unique: true,
         lowercase: true
     },
     password: {
         type: String,
-        required: true
+        required: [true, "Your password is required"]
     },
     userID: {
         type: String,
@@ -26,7 +26,7 @@ const userSchema = new Schema({
     },
     firstName: {
         type: String,
-        required: true,
+        required: [true, "Your firstname is required"],
         trim: true,
     }, 
     lastName: {
@@ -44,11 +44,11 @@ const userSchema = new Schema({
             ref: 'Complaints'
         }
     ],
-    isAdmin: {
-        type: Boolean,
-        required: true,
-        default: false
-    }
+    // isAdmin: {
+    //     type: Boolean,
+    //     required: true,
+    //     default: false
+    // }
 },
 {
     methods: {

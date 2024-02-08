@@ -17,8 +17,8 @@ const Login = () => {
     const handleOnChange = (event) => {
         const { name, value } = event.target;
         setInputValue({
-        ...inputValue,
-        [name]: value,
+            ...inputValue,
+            [name]: value,
         });
     }
 

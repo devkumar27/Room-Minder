@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Complaint from '../db/models/complaint.model.js';
-// import generateToken from '../utils/generateToken';
+import decodeToken from '../utils/decodeToken.js';
 import User from '../db/models/user.model.js';
 import 'dotenv/config';
 
@@ -9,32 +9,49 @@ import 'dotenv/config';
 // @route       POST /api/complaints/
 // @access      Public
 const raiseComplaint = asyncHandler(async (req, res) => {
-    const { complaintType, description } = req.body;
+    try {
+        const { complaintType, description } = req.body;
+        const bearerHeader = req.headers.authorization; 
+        const token = bearerHeader.split(' ')[1];
+        const decoded = decodeToken(token);
+        const filedBy = decoded.id;
 
-    const currTicketNo = process.env.TICKET_NO;
-    if(complaintType && description) {
-        const newComplaint = new Complaint({
-            ticketNo: currTicketNo,
-            complaintType,
-            filedBy: "64edeec9440cf56a2588dd00",
-            regDate: new Date(),
-            description
-        });
-        process.env.TICEKT_NO += 1;
-        const filedComplaint = await newComplaint.save();
+        if(complaintType && description) {
+            const newComplaint = new Complaint({
+                complaintType,
+                filedBy,
+                regDate: new Date(),
+                description
+            });
+            const filedComplaint = await newComplaint.save();
 
-        if(filedComplaint) {
-            res.status(201).json(filedComplaint);
-        }
+            if(filedComplaint) {
+                res.status(201).json({
+                    filedComplaint,
+                    success: true,
+                    message: "Complaint filed successfully!"
+                });
+            }
+            else {
+                res.status(401).json({
+                    success: false,
+                    message: 'An error occurred while filing the complaint. Please try again.'
+                });
+            }
+        } 
         else {
-            res.status(401);
-            throw new Error('An error occurred while filing the complaint. Please try again.');
+            res.status(400).json({
+                success: false,
+                message: 'Both, "Complaint Type" and "Description" are required!'
+            });
         }
-    } 
-    else {
-        res.status(400);
-        throw new Error('Both, "Complaint Type" and "Description" are required!');
+    } catch(err) {
+        res.status(500).json({
+            success: false,
+            message: err.message
+        });
     }
+    
 });
 
 // @desc        Fetch all complaints

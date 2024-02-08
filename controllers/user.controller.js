@@ -43,7 +43,10 @@ const authUser = asyncHandler(async (req, res, next) => {
             });
         }
     } catch(err) {
-        console.log(err);
+        res.status(500).json({
+            message: "Error logging in, please try again later.",
+            success: false
+        });
     }
 });
 
@@ -85,7 +88,10 @@ const registerUser = asyncHandler(async (req, res, next) => {
             });
         }
     } catch(err) {
-        console.log(err);
+        res.status(500).json({
+            message: "Error registering, please try again later.",
+            success: false
+        });
     }
 });
 

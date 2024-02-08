@@ -2,12 +2,7 @@ import mongoose from "mongoose";
 
 // Schema design for complaints filed by hostellers
 const complaintSchema = new mongoose.Schema({
-    ticketNo: {
-        type: Number,
-        required: true,
-        // unique: true 
-    },
-    complaintType: { // look into how you can select a value for this field from a few options
+    complaintType: { // give limited options in frontend
         type: String,
         required: true,
     },

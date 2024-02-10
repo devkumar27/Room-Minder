@@ -3,6 +3,7 @@ import Complaint from '../db/models/complaint.model.js';
 import decodeToken from '../utils/decodeToken.js';
 import User from '../db/models/user.model.js';
 import 'dotenv/config';
+import Complaints from '../db/models/complaint.model.js';
 
 
 // @desc        File a new complaint
@@ -60,7 +61,7 @@ const raiseComplaint = asyncHandler(async (req, res) => {
 const allComplaints = asyncHandler(async (req, res) => {
     try {
         const complaints = await Complaint.find({ });
-        res.json(complaints);
+        res.status(200).json(complaints);
     } catch(err) {
         res.status(400);
         console.log('Error retrieving data. Please try again later.')
@@ -71,18 +72,34 @@ const allComplaints = asyncHandler(async (req, res) => {
 // @route       GET /api/complaints/history
 // @access      Public
 const complaintHistory = asyncHandler(async (req, res) => {
-    const { userID } = req.body;
-    if(userID) {
-        const userComplaintsHist = await User.find({ userID });
-        res.json(userComplaintsHist.complaints);
-    }
-    else {
-        res.status(500);
-        throw new Error('CHError-Something went wrong. Please try again later.');
+    try {
+        const bearerHeader = req.headers.authorization; 
+        const token = bearerHeader.split(' ')[1];
+        const decoded = decodeToken(token);
+        const filedBy = decoded.id;
+
+        const complaints = await Complaints.find({ filedBy });
+
+        if(complaints.length !== 0) {
+            res.status(200).json({
+                success: true,
+                message: "Complaints fetched successfully!",
+                complaints
+            })
+        }
+        else {
+            res.status(204).json({
+                success: true,
+                message: 'No complaints found.'
+            });
+        }
+    } catch(err) {
+        res.status(500).json({
+            success: false,
+            message: "Could not fetch complaints, please try again later"
+        })
     }
 });
-
-
 
 export {
     raiseComplaint,

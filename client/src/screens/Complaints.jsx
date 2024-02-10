@@ -5,7 +5,7 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
 const Complaints = () => {
-    const [cookies, setCookie, removeCookie] = useCookies(['token']);
+    const [cookies] = useCookies(['token']);
     const [inputValue, setInputValue] = useState({
         complaintType: "",
         description: ""
@@ -22,30 +22,34 @@ const Complaints = () => {
 
     const handleSubmit = async(e) => {
         e.preventDefault();
+        try {
+            const token = cookies.token;
+            const { data } = await axios.post("http://localhost:5000/api/complaints",
+                {
+                    ...inputValue
+                },
+                {
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                },
+                { withCredentials: true}
+            );
 
-        const token = cookies.token;
-        const { data } = await axios.post("http://localhost:5000/api/complaints",
-            {
-                ...inputValue
-            },
-            {
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            },
-            { withCredentials: true}
-        );
-
-        const { success, message } = data;
-        if(success) {
-            alert(message);
-        } else {
-            alert(message);
+            const { success, message } = data;
+            if(success) {
+                alert(message);
+            } else {
+                alert(message);
+            }
+            setInputValue({
+                complaintType: "",
+                description: ""
+            });
+        } catch(err) {
+            alert(err)
         }
-        setInputValue({
-            complaintType: "",
-            description: ""
-        });
+
     }
 
     
@@ -66,10 +70,10 @@ const Complaints = () => {
                     id="complaintType" 
                     className="input-field"
                     onChange={handleOnChange} >
-                        <option value=""></option>
-                        <option value="electrical">Electrical</option>
-                        <option value="cleaning">Cleaning</option>
-                        <option value="other">Other</option>
+                        <option value="">Select an option...</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="Cleaning">Cleaning</option>
+                        <option value="Other">Other</option>
                     </select>
                 </div>
 
@@ -81,7 +85,8 @@ const Complaints = () => {
                     id="description" 
                     className="input-field" 
                     placeholder="Describe your issue..."
-                    onChange={handleOnChange} />
+                    onChange={handleOnChange} 
+                    rows="400" />
                 </div>
 
                 <div className="input-group">

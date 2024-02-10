@@ -1,15 +1,25 @@
 .navbar {
     padding: 10px 20px;
-    background-color: #ec3f00ce;
-    color: #fff;
+    background-color: #034078;
+    color: #FEFCFB;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
+.navbar h1 {
+    user-select: none;
+}
+
 .nav-links a{
     margin: 0 10px;
+    padding: 20px 0;
     color: #fff;
     font-weight: 400;
     text-decoration: none;
+}
+
+.nav-links a:hover {
+    background-color:  #001F54;
+    color: #FEFCFB;
 }

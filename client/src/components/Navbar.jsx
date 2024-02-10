@@ -29,7 +29,7 @@ const Navbar = () => {
             {isLoggedIn && (
                 <div className='nav-links'>
                     <a><Link to="api/complaints/">File A Complaint</Link></a>            
-                    <a><Link to="api/complaints/all">All Complaints</Link></a>
+                    {/* <a><Link to="api/complaints/all">All Complaints</Link></a> */}
                     <a><Link to="api/complaints/history">History</Link></a>
                 </div>
             )}

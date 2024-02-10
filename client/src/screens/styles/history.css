@@ -1,0 +1,62 @@
+.page-heading {
+    text-align: center;
+    margin-top: 50px;
+    color: #001F54;
+    font-weight: 400;
+}
+
+#not-found-img {
+    width: 120px;
+    height: 120px;
+    user-select: none;
+}
+
+.not-found-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+thead {
+    background-color: #034078;
+    color: #FEFCFB;
+}
+th {
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+td {
+    padding: 25px 10px;
+}
+
+tr:nth-of-type(2n) {
+    background-color: #fff;
+}
+
+.status {
+    padding: 3px 2px;
+    border-radius: 10px;
+    user-select: none;
+}
+
+.green {
+    background-color: #38b000;
+    color: #FEFCFB;
+}
+
+.yellow {
+    background-color: goldenrod;
+    color: #FEFCFB;
+}
+
+.table {
+    width: 60%;
+}

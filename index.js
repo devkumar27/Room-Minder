@@ -16,7 +16,7 @@ mongoose.connect(process.env.DB_URI).then(() => {
     console.log(err.message);
 })
 
-app.use(cors(({ credentials: true, origin: 'http://localhost:3000' })));
+app.use(cors(({ credentials: true, origin: 'https://roomminder.onrender.com' })));
 app.use(express.json());
 app.use(cookieParser());
 
